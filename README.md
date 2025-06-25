@@ -88,7 +88,7 @@ npm install
 
 ```env
 DB_USER=your database username
-DB_PASSWORD=your data base password
+DB_PASSWORD=your database password
 ```
 
 4. **Start the development server**

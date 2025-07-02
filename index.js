@@ -71,11 +71,23 @@ async function run() {
 
     app.get("/artifacts", async (req, res) => {
       const searchQuery = req.query.name;
+      const sortQuery = req.query.sort || "name-asc";
+
       let query = {};
       if (searchQuery) {
         query = { artifact_name: { $regex: searchQuery, $options: "i" } };
       }
-      const result = await artifactsCollection.find(query).toArray();
+
+      let sortOption = {};
+      if (sortQuery === "name-asc") sortOption = { artifact_name: 1 };
+      else if (sortQuery === "name-desc") sortOption = { artifact_name: -1 };
+      else if (sortQuery === "date-asc") sortOption = { date: 1 };
+      else if (sortQuery === "date-desc") sortOption = { date: -1 };
+
+      const result = await artifactsCollection
+        .find(query)
+        .sort(sortOption)
+        .toArray();
       res.send(result);
     });
 
